@@ -18,6 +18,7 @@
 - name: Delete SASL users
   shell: "{{ cyrus_sasl_saslpassword_command }} -a '{{ item.value.appname }}' -u '{{ item.value.domain }}' -d -f '{{ cyrus_sasl_sasldb_file }}' '{{ item.key }}'"
   with_dict: "{{ cyrus_sasl_user }}"
+  no_log: yes
   when:
     - item.value.state == 'absent'
     - item.key ~ '@' ~ item.value.domain in register_sasldblistusers.stdout_lines
