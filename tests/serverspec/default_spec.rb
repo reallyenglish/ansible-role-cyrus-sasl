@@ -7,6 +7,7 @@ sasldb_file = "/etc/sasldb2"
 group = "sasl"
 default_user = "root"
 default_group = "root"
+service = "saslauthd"
 
 sasldb_permission = 660
 
@@ -20,7 +21,7 @@ when "openbsd"
 when "ubuntu"
   packages = [ "libsasl2-2", "sasl2-bin" ]
 when "redhat"
-  packages = [ "cyrus-sasl-lib" ]
+  packages = [ "cyrus-sasl" ]
   sasldb_permission = 640
   group = "root"
 when "freebsd"
@@ -61,4 +62,24 @@ describe command(sasldblistusers_command) do
   its(:stdout) { should match(/^foo@reallyenglish\.com: userPassword$/) }
   its(:stderr) { should match(/^$/) }
   its(:exit_status) { should eq 0 }
+end
+
+case os[:family]
+when "ubuntu"
+  describe file("/etc/default/saslauthd") do
+    its(:content) { should match(/^START=yes$/) }
+    its(:content) { should match(/^MECHANISMS="pam"$/) }
+    its(:content) { should match(/^MECH_OPTIONS=""$/) }
+    its(:content) { should match(/^THREADS=5$/) }
+    its(:content) { should match(/^OPTIONS="-c -m \/var\/run\/saslauthd"$/) }
+  end
+when "freebsd"
+  describe package("security/cyrus-sasl2-saslauthd") do
+    it { should be_installed }
+  end
+end
+
+describe service(service) do
+  it { should be_enabled }
+  it { should be_running }
 end

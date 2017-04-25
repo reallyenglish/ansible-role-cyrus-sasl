@@ -5,6 +5,10 @@
 
 - include: "install-{{ ansible_os_family }}.yml"
 
+- include: configure-Debian.yml
+  when:
+    - ansible_os_family == 'Debian'
+
 - name: Get all SASL users
   shell: "{{ cyrus_sasl_sasldblistusers_command }} | cut -f1 -d':'"
   register: register_sasldblistusers
@@ -61,3 +65,9 @@
   no_log: yes
   when:
     - "'does not match' in item.stdout_lines"
+
+- name: Start saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: yes
+    state: started
