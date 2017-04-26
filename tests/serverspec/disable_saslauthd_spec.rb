@@ -108,5 +108,8 @@ end
 
 describe service(service) do
   it { should_not be_enabled }
-  it { should_not be_running }
+  it do
+    pending "serverspec does not use onestatus to check the status" if os[:family] == "freebsd"
+    should_not be_running
+  end
 end
