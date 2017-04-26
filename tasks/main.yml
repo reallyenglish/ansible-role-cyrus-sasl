@@ -73,3 +73,13 @@
     name: "{{ cyrus_sasl_saslauthd_service }}"
     enabled: yes
     state: started
+  when:
+    - cyrus_sasl_saslauthd_enable
+
+- name: Stop saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: no
+    state: stopped
+  when:
+    - not cyrus_sasl_saslauthd_enable

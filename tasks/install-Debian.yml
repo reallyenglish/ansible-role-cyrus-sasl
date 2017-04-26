@@ -11,6 +11,17 @@
     src: Debian.default.j2
     dest: /etc/default/saslauthd
     backup: yes
+  register: register_default_saslauthd
+
+- name: Remove /run/systemd/generator.late/saslauthd.service
+  # make sure that the auto-genrated unit file is always valid. even if it has
+  # been created when `START` is set to `no`, removing the generated one ensures
+  # is is valid.
+  file:
+    path: "/run/systemd/generator.late/{{ cyrus_sasl_saslauthd_service }}.service"
+    state: absent
+  when:
+    - register_default_saslauthd.changed
 
 - name: Install cyrus-sasl
   apt:

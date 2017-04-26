@@ -1,0 +1,18 @@
+- hosts: localhost
+  roles:
+    - ansible-role-cyrus-sasl
+  vars:
+    cyrus_sasl_user:
+      foo:
+        domain: reallyenglish.com
+        password: password
+        appname: argus
+        state: present
+    cyrus_sasl_config:
+      myapp:
+        pwcheck_method: saslauthd
+      argus:
+        pwcheck_method: auxprop
+        auxprop_plugin: sasldb
+        mech_list: DIGEST-MD5
+    cyrus_sasl_saslauthd_enable: no
