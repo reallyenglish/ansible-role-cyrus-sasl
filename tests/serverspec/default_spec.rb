@@ -4,6 +4,7 @@ require "serverspec"
 packages = []
 sasldblistusers_command = "sasldblistusers2"
 sasldb_file = "/etc/sasldb2"
+sasllib_dir = "/usr/lib/sasl2"
 group = "sasl"
 default_user = "root"
 default_group = "root"
@@ -18,16 +19,19 @@ when "openbsd"
   default_group = "wheel"
   sasldb_permission = 600
   sasldb_file = "/etc/sasldb2.db"
+  sasllib_dir = "/usr/local/lib/sasl2"
 when "ubuntu"
   packages = [ "libsasl2-2", "sasl2-bin" ]
 when "redhat"
   packages = [ "cyrus-sasl" ]
   sasldb_permission = 640
   group = "root"
+  sasllib_dir = "/usr/lib64/sasl2"
 when "freebsd"
   packages = [ "cyrus-sasl" ]
   sasldb_file = "/usr/local/etc/sasldb2.db"
   sasldb_permission = 600
+  sasllib_dir = "/usr/local/lib/sasl2"
   group = "wheel"
   default_group = "wheel"
 end
@@ -77,6 +81,30 @@ when "freebsd"
   describe package("security/cyrus-sasl2-saslauthd") do
     it { should be_installed }
   end
+end
+
+describe file ("#{ sasllib_dir }/myapp.conf") do
+  it { should be_file }
+  it { should be_mode 644 }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  its(:content) { should match(/^pwcheck_method: saslauthd$/) }
+end
+
+describe file ("#{ sasllib_dir }/argus.conf") do
+  it { should be_file }
+  it { should be_mode 644 }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  its(:content) { should match(/^pwcheck_method: auxprop$/) }
+  its(:content) { should match(/^auxprop_plugin: sasldb$/) }
+  its(:content) { should match(/^mech_list: DIGEST-MD5$/) }
+end
+
+describe command("testsaslauthd -u vagrant -p vagrant -s login") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/^0: OK "Success."$/) }
+  its(:stderr) { should eq "" }
 end
 
 describe service(service) do

@@ -5,9 +5,11 @@
 
 - include: "install-{{ ansible_os_family }}.yml"
 
-- include: configure-Debian.yml
-  when:
-    - ansible_os_family == 'Debian'
+- name: Create plug-ins config
+  template:
+    src: sasl.conf.j2
+    dest: "{{ cyrus_sasl_plugin_dir }}/{{ item.key }}.conf"
+  with_dict: "{{ cyrus_sasl_config }}"
 
 - name: Get all SASL users
   shell: "{{ cyrus_sasl_sasldblistusers_command }} | cut -f1 -d':'"

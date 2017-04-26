@@ -8,3 +8,10 @@
         password: password
         appname: argus
         state: present
+    cyrus_sasl_config:
+      myapp:
+        pwcheck_method: saslauthd
+      argus:
+        pwcheck_method: auxprop
+        auxprop_plugin: sasldb
+        mech_list: DIGEST-MD5

@@ -1,8 +1,0 @@
----
-
-- name: Create /etc/default/saslauthd
-  # surprisingly, saslauthd does not start by default
-  template:
-    src: Debian.default.j2
-    dest: /etc/default/saslauthd
-    backup: yes

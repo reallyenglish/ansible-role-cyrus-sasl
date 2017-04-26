@@ -1,7 +1,7 @@
 # ansible-role-cyrus-sasl
 
 Installs `cyrus-sasl`, `saslauthd` and configures users in `sasl2.db`. This
-role supports local SASL database only. If you want other back-ends, this is
+role supports local SASL database and `saslauthd` only. If you want other back-ends, this is
 not for you.
 
 ## `sasl_check_pw`
@@ -34,9 +34,23 @@ None
 | `cyrus_sasl_user` | a dict of SASL users to manage (see below) | `{}` |
 | `cyrus_sasl_package` | the package name of `cyrus-sasl` | `{{ __cyrus_sasl_package }}` |
 | `cyrus_sasl_saslauthd_service` | the service name of `saslauthd` | `{{ __cyrus_sasl_saslauthd_service }}` |
+| `cyrus_sasl_plugin_dir` | the plugin directory where application config resides | `{{ __cyrus_sasl_plugin_dir }}` |
 | `cyrus_sasl_saslpassword_command` | the command to manage password of users | `{{ __cyrus_sasl_saslpassword_command }}` |
 | `cyrus_sasl_sasldblistusers_command` | the command to list users in the database | `{{ __cyrus_sasl_sasldblistusers_command }}` |
 | `cyrus_sasl_sasldb_file` | path to `sasl2.db` | `{{ __cyrus_sasl_sasldb_file }}` |
+| `cyrus_sasl_config` | a dict of application config (see below) | `{}` |
+| `cyrus_sasl_user` | a dict of users in `sasl2.db` (see below) | `{}` |
+
+## `cyrus_sasl_config`
+
+The key is application name. The value is a dict in which the key is a variable
+name and the value is its value. Example:
+
+```yaml
+cyrus_sasl_config:
+    myapp:
+        pwcheck_method: saslauthd
+```
 
 ## `cyrus_sasl_user`
 
@@ -57,12 +71,14 @@ cyrus_sasl_user:
     appname: argus
     state: present
 ```
+
 ## Debian
 
 | Variable | Default |
 |----------|---------|
 | `__cyrus_sasl_package` | `libsasl2-2` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_plugin_dir` | `/usr/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/etc/sasldb2` |
@@ -73,6 +89,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/usr/local/etc/sasldb2` |
@@ -83,6 +100,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl--` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/etc/sasldb2` |
@@ -93,6 +111,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_plugin_dir` | `/usr/lib64/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/etc/sasldb2` |
@@ -114,6 +133,13 @@ None
         password: password
         appname: argus
         state: present
+    cyrus_sasl_config:
+      myapp:
+        pwcheck_method: saslauthd
+      argus:
+        pwcheck_method: auxprop
+        auxprop_plugin: sasldb
+        mech_list: DIGEST-MD5
 ```
 
 # License
