@@ -8,10 +8,7 @@ AllCops:
     - Rakefile
     - Gemfile
 Style/StringLiterals:
-  # needs agreement
-  # https://github.com/reallyenglish/ansible-role-example/issues/60#issuecomment-280573231
-  Exclude:
-    - "**/*"
+  EnforcedStyle: double_quotes
 Metrics/LineLength:
   # https://github.com/reallyenglish/ansible-role-example/issues/60#issuecomment-282973178
   Max: 256
