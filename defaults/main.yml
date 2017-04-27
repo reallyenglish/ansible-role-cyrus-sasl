@@ -1,4 +1,3 @@
-cyrus_sasl_user: cyrus
 cyrus_sasl_package: "{{ __cyrus_sasl_package }}"
 cyrus_sasl_saslauthd_service: "{{ __cyrus_sasl_saslauthd_service }}"
 cyrus_sasl_saslauthd_enable: yes

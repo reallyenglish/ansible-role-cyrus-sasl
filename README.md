@@ -31,7 +31,6 @@ None
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `cyrus_sasl_user` | a dict of SASL users to manage (see below) | `{}` |
 | `cyrus_sasl_package` | the package name of `cyrus-sasl` | `{{ __cyrus_sasl_package }}` |
 | `cyrus_sasl_saslauthd_service` | the service name of `saslauthd` | `{{ __cyrus_sasl_saslauthd_service }}` |
 | `cyrus_sasl_saslauthd_enable` | enable `saslauthd` if yes | yes |
