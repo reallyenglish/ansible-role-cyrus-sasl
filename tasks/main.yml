@@ -42,17 +42,17 @@
     # BSDs appends '.db' to the given file name, but others treat it as-is
     cyrus_sasl_sasldb_file_real_path: "{% if ansible_os_family == 'FreeBSD' or ansible_os_family == 'OpenBSD' %}{{ cyrus_sasl_sasldb_file }}.db{% else %}{{ cyrus_sasl_sasldb_file }}{% endif %}"
 
-- name: See if sasl2.db exists
+- name: See if SASL DB file exists
   stat:
     path: "{{ cyrus_sasl_sasldb_file_real_path }}"
   register: register_sasldb_file
 
-- name: Set group permission on sasl2.db
+- name: Set group permission on SASL DB file
   file:
     path: "{{ cyrus_sasl_sasldb_file_real_path }}"
     owner: "{{ cyrus_sasl_sasldb_owner }}"
     group: "{{ cyrus_sasl_sasldb_group }}"
-    mode: "{{ cyrus_sasl_sasldb_group_permission }}"
+    mode: "{{ cyrus_sasl_sasldb_file_permission }}"
   when:
     - register_sasldb_file.stat.exists
 
