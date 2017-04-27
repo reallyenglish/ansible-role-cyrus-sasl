@@ -34,7 +34,7 @@ None
 | `cyrus_sasl_user` | a dict of SASL users to manage (see below) | `{}` |
 | `cyrus_sasl_package` | the package name of `cyrus-sasl` | `{{ __cyrus_sasl_package }}` |
 | `cyrus_sasl_saslauthd_service` | the service name of `saslauthd` | `{{ __cyrus_sasl_saslauthd_service }}` |
-| `cyrus_sasl_saslauthd_enable` | enable `saslauthd` if true | yes |
+| `cyrus_sasl_saslauthd_enable` | enable `saslauthd` if yes | yes |
 | `cyrus_sasl_plugin_dir` | the plugin directory where application config resides | `{{ __cyrus_sasl_plugin_dir }}` |
 | `cyrus_sasl_saslpassword_command` | the command to manage password of users | `{{ __cyrus_sasl_saslpassword_command }}` |
 | `cyrus_sasl_sasldblistusers_command` | the command to list users in the database | `{{ __cyrus_sasl_sasldblistusers_command }}` |

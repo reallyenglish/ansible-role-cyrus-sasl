@@ -23,11 +23,15 @@ when "ubuntu"
   packages = [ "libsasl2-2", "sasl2-bin" ]
 when "redhat"
   packages = [ "cyrus-sasl" ]
+  sasldb_permission = 640
+  group = "root"
   sasllib_dir = "/usr/lib64/sasl2"
 when "freebsd"
   packages = [ "cyrus-sasl" ]
   sasldb_file = "/usr/local/etc/sasldb2.db"
+  sasldb_permission = 600
   sasllib_dir = "/usr/local/lib/sasl2"
+  group = "wheel"
   default_group = "wheel"
 end
 
