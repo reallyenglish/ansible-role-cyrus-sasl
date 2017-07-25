@@ -14,18 +14,18 @@ sasldb_permission = 640
 
 case os[:family]
 when "openbsd"
-  packages = [ "cyrus-sasl" ]
+  packages = ["cyrus-sasl"]
   default_group = "wheel"
   sasldb_file = "/etc/sasldb2.db"
   sasllib_dir = "/usr/local/lib/sasl2"
 when "ubuntu"
   group = "nogroup"
-  packages = [ "libsasl2-2", "sasl2-bin" ]
+  packages = ["libsasl2-2", "sasl2-bin"]
 when "redhat"
-  packages = [ "cyrus-sasl" ]
+  packages = ["cyrus-sasl"]
   sasllib_dir = "/usr/lib64/sasl2"
 when "freebsd"
-  packages = [ "cyrus-sasl" ]
+  packages = ["cyrus-sasl"]
   sasldb_file = "/usr/local/etc/sasldb2.db"
   sasllib_dir = "/usr/local/lib/sasl2"
   default_group = "wheel"
@@ -34,7 +34,7 @@ end
 packages.each do |p|
   describe package(p) do
     it { should be_installed }
-  end 
+  end
 end
 
 describe file(sasldb_file) do
@@ -51,7 +51,7 @@ describe file("/usr/local/bin/sasl_check_pw") do
   it { should be_grouped_into default_group }
 end
 
-describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{ sasldb_file } foo reallyenglish.com") do
+describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{sasldb_file} foo reallyenglish.com") do
   its(:stdout) { should match(/^matched$/) }
   its(:stderr) { should match(/^$/) }
   its(:exit_status) { should eq 0 }
@@ -70,18 +70,18 @@ when "ubuntu"
     its(:content) { should match(/^MECHANISMS="pam"$/) }
     its(:content) { should match(/^MECH_OPTIONS=""$/) }
     its(:content) { should match(/^THREADS="6"$/) }
-    its(:content) { should match(/^OPTIONS="-c -m \/var\/run\/saslauthd"$/) }
+    its(:content) { should match(/^OPTIONS="-c -m #{Regexp.escape("/var/run/saslauthd")}"$/) }
   end
 
   describe process("saslauthd") do
     its(:count) { should eq 6 }
-    its(:args) { should match(/-a pam -c -m \/var\/run\/saslauthd -n 6/) }
+    its(:args) { should match(/-a pam -c -m #{Regexp.escape("/var/run/saslauthd")} -n 6/) }
   end
 when "freebsd"
   describe package("security/cyrus-sasl2-saslauthd") do
     it { should be_installed }
   end
-  
+
   describe file("/etc/rc.conf.d/saslauthd") do
     it { should be_file }
     it { should be_mode 644 }
@@ -117,17 +117,17 @@ when "redhat"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^SOCKETDIR="\/run\/saslauthd"$/) }
+    its(:content) { should match(/^SOCKETDIR="#{Regexp.escape("/run/saslauthd")}"$/) }
     its(:content) { should match(/^MECH="pam"$/) }
     its(:content) { should match(/^FLAGS="-n 6"$/) }
   end
   describe process("saslauthd") do
     its(:count) { should eq 6 }
-    its(:args) { should match(/-m \/run\/saslauthd -a pam -n 6/) }
+    its(:args) { should match(/-m #{Regexp.escape("/run/saslauthd")} -a pam -n 6/) }
   end
 end
 
-describe file ("#{ sasllib_dir }/myapp.conf") do
+describe file "#{sasllib_dir}/myapp.conf" do
   it { should be_file }
   it { should be_mode 644 }
   it { should be_owned_by default_user }
@@ -135,7 +135,7 @@ describe file ("#{ sasllib_dir }/myapp.conf") do
   its(:content) { should match(/^pwcheck_method: saslauthd$/) }
 end
 
-describe file ("#{ sasllib_dir }/argus.conf") do
+describe file "#{sasllib_dir}/argus.conf" do
   it { should be_file }
   it { should be_mode 644 }
   it { should be_owned_by default_user }
