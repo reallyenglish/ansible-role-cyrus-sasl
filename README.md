@@ -93,7 +93,6 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `libsasl2-2` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_flags` | `-c -m /var/run/saslauthd` |
 | `__cyrus_sasl_saslauthd_extra_variables_default` | `{"MECHANISMS"=>"pam", "MECH_OPTIONS"=>"", "THREADS"=>5, "OPTIONS"=>"-c -m /var/run/saslauthd"}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
@@ -108,7 +107,6 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_flags` | `-a pam` |
 | `__cyrus_sasl_saslauthd_extra_variables_default` | `{}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
@@ -123,7 +121,6 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl--` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_flags` | `-a getpwent` |
 | `__cyrus_sasl_saslauthd_extra_variables_default` | `{"flags"=>"-a getpwent"}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
@@ -138,7 +135,6 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_flags` | `""` |
 | `__cyrus_sasl_saslauthd_extra_variables_default` | `{"SOCKETDIR"=>"/run/saslauthd", "MECH"=>"pam", "FLAGS"=>""}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/lib64/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
