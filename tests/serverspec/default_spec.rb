@@ -69,12 +69,61 @@ when "ubuntu"
     its(:content) { should match(/^START=yes$/) }
     its(:content) { should match(/^MECHANISMS="pam"$/) }
     its(:content) { should match(/^MECH_OPTIONS=""$/) }
-    its(:content) { should match(/^THREADS=5$/) }
+    its(:content) { should match(/^THREADS="6"$/) }
     its(:content) { should match(/^OPTIONS="-c -m \/var\/run\/saslauthd"$/) }
+  end
+
+  describe process("saslauthd") do
+    its(:count) { should eq 6 }
+    its(:args) { should match(/-a pam -c -m \/var\/run\/saslauthd -n 6/) }
   end
 when "freebsd"
   describe package("security/cyrus-sasl2-saslauthd") do
     it { should be_installed }
+  end
+  
+  describe file("/etc/rc.conf.d/saslauthd") do
+    it { should be_file }
+    it { should be_mode 644 }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    its(:content) { should match(/^saslauthd_flags="-a pam -n 6"$/) }
+  end
+
+  describe process("saslauthd") do
+    its(:args) do
+      pending "process resource does not work on FreeBSD (ps -C is linuxism)"
+      should match(/-a pam -n 6/)
+    end
+  end
+
+  describe command("ps -ax -o command") do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should eq "" }
+    its(:stdout) { should match(/saslauthd\s.*-a pam -n 6/) }
+  end
+when "openbsd"
+  describe file("/etc/rc.conf.local") do
+    its(:content) { should match(/^saslauthd_flags=-a getpwent -n 6/) }
+  end
+  describe command("ps -ax -o command") do
+    its(:exit_status) { should eq 0 }
+    its(:stderr) { should eq "" }
+    its(:stdout) { should match(/saslauthd\s.*-a getpwent -n 6/) }
+  end
+when "redhat"
+  describe file("/etc/sysconfig/saslauthd") do
+    it { should exist }
+    it { should be_mode 644 }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    its(:content) { should match(/^SOCKETDIR="\/run\/saslauthd"$/) }
+    its(:content) { should match(/^MECH="pam"$/) }
+    its(:content) { should match(/^FLAGS="-n 6"$/) }
+  end
+  describe process("saslauthd") do
+    its(:count) { should eq 6 }
+    its(:args) { should match(/-m \/run\/saslauthd -a pam -n 6/) }
   end
 end
 

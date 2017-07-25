@@ -69,7 +69,7 @@ when "ubuntu"
     its(:content) { should match(/^START=yes$/) }
     its(:content) { should match(/^MECHANISMS="pam"$/) }
     its(:content) { should match(/^MECH_OPTIONS=""$/) }
-    its(:content) { should match(/^THREADS=5$/) }
+    its(:content) { should match(/^THREADS="5"$/) }
     its(:content) { should match(/^OPTIONS="-c -m \/var\/run\/saslauthd"$/) }
   end
 when "freebsd"
