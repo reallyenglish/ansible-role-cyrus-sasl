@@ -34,8 +34,8 @@ None
 | `cyrus_sasl_package` | the package name of `cyrus-sasl` | `{{ __cyrus_sasl_package }}` |
 | `cyrus_sasl_saslauthd_service` | the service name of `saslauthd` | `{{ __cyrus_sasl_saslauthd_service }}` |
 | `cyrus_sasl_saslauthd_enable` | enable `saslauthd` if yes | yes |
-| `cyrus_sasl_saslauthd_extra_variables` | dict of service variables and their values (see below) | `{}` |
-| `cyrus_sasl_saslauthd_extra_variables_default` | default value of service variables and their values | `{{ __cyrus_sasl_saslauthd_extra_variables_default }}` |
+| `cyrus_sasl_saslauthd_flags` | dict of service variables and their values (see below) | `{}` |
+| `cyrus_sasl_saslauthd_flags_default` | default value of service variables and their values | `{{ __cyrus_sasl_saslauthd_flags_default }}` |
 | `cyrus_sasl_plugin_dir` | the plugin directory where application config resides | `{{ __cyrus_sasl_plugin_dir }}` |
 | `cyrus_sasl_saslpassword_command` | the command to manage password of users | `{{ __cyrus_sasl_saslpassword_command }}` |
 | `cyrus_sasl_sasldblistusers_command` | the command to list users in the database | `{{ __cyrus_sasl_sasldblistusers_command }}` |
@@ -46,7 +46,7 @@ None
 | `cyrus_sasl_config` | a dict of application config (see below) | `{}` |
 | `cyrus_sasl_user` | a dict of users in SASL DB file (see below) | `{}` |
 
-## `cyrus_sasl_saslauthd_extra_variables`
+## `cyrus_sasl_saslauthd_flags`
 
 This variable is a dict of variables of configuration files, such as
 `/etc/default/saslauthd`. A key in the dict is name of the variable in the
@@ -93,7 +93,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `libsasl2-2` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_extra_variables_default` | `{"MECHANISMS"=>"pam", "MECH_OPTIONS"=>"", "THREADS"=>5, "OPTIONS"=>"-c -m /var/run/saslauthd"}` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{"MECHANISMS"=>"pam", "MECH_OPTIONS"=>"", "THREADS"=>5, "OPTIONS"=>"-c -m /var/run/saslauthd"}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -107,7 +107,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_extra_variables_default` | `{}` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -121,7 +121,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl--` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_extra_variables_default` | `{"flags"=>"-a getpwent"}` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{"flags"=>"-a getpwent"}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -135,7 +135,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
-| `__cyrus_sasl_saslauthd_extra_variables_default` | `{"SOCKETDIR"=>"/run/saslauthd", "MECH"=>"pam", "FLAGS"=>""}` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{"SOCKETDIR"=>"/run/saslauthd", "MECH"=>"pam", "FLAGS"=>""}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/lib64/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -178,7 +178,7 @@ None
       saslauthd_flags: -a pam -n 6
     extra_variables_openbsd:
       flags: -a getpwent -n 6
-    cyrus_sasl_saslauthd_extra_variables: "{% if ansible_os_family == 'Debian' %}{{ extra_variables_debian }}{% elif ansible_os_family == 'RedHat' %}{{ extra_variables_redhat }}{% elif ansible_os_family == 'FreeBSD' %}{{ extra_variables_freebsd }}{% elif ansible_os_family == 'OpenBSD' %}{{ extra_variables_openbsd }}{% endif %}"
+    cyrus_sasl_saslauthd_flags: "{% if ansible_os_family == 'Debian' %}{{ extra_variables_debian }}{% elif ansible_os_family == 'RedHat' %}{{ extra_variables_redhat }}{% elif ansible_os_family == 'FreeBSD' %}{{ extra_variables_freebsd }}{% elif ansible_os_family == 'OpenBSD' %}{{ extra_variables_openbsd }}{% endif %}"
 ```
 
 # License

@@ -2,6 +2,6 @@
 START=yes
 DESC="SASL Authentication Daemon"
 NAME="saslauthd"
-{% for k, v in cyrus_sasl_saslauthd_extra_variables_merged | dictsort() %}
+{% for k, v in cyrus_sasl_saslauthd_flags_merged | dictsort() %}
 {{ k }}="{{ v }}"
 {% endfor %}

@@ -26,4 +26,4 @@
       saslauthd_flags: -a pam -n 6
     extra_variables_openbsd:
       flags: -a getpwent -n 6
-    cyrus_sasl_saslauthd_extra_variables: "{% if ansible_os_family == 'Debian' %}{{ extra_variables_debian }}{% elif ansible_os_family == 'RedHat' %}{{ extra_variables_redhat }}{% elif ansible_os_family == 'FreeBSD' %}{{ extra_variables_freebsd }}{% elif ansible_os_family == 'OpenBSD' %}{{ extra_variables_openbsd }}{% endif %}"
+    cyrus_sasl_saslauthd_flags: "{% if ansible_os_family == 'Debian' %}{{ extra_variables_debian }}{% elif ansible_os_family == 'RedHat' %}{{ extra_variables_redhat }}{% elif ansible_os_family == 'FreeBSD' %}{{ extra_variables_freebsd }}{% elif ansible_os_family == 'OpenBSD' %}{{ extra_variables_openbsd }}{% endif %}"
