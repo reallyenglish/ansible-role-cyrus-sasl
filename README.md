@@ -50,7 +50,9 @@ None
 
 This variable is a dict of variables of configuration files, such as
 `/etc/default/saslauthd`. A key in the dict is name of the variable in the
-file, and the value of the key is value of the variable.
+file, and the value of the key is value of the variable. The variable is
+combined with `cyrus_sasl_saslauthd_flags_default`, which includes upstream's
+default values.
 
 In OpenBSD, the above explanation does not apply. In this case, the only valid
 key is `flags` and the value is passed to `saslauthd_flags` in
