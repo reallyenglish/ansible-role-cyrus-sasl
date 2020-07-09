@@ -35,7 +35,7 @@
     - item.key ~ '@' ~ item.value.domain in register_sasldblistusers.stdout_lines
 
 - name: Create SASL users
-  shell: "echo -n {{ item.value.password }} | {{ cyrus_sasl_saslpassword_command }} -a '{{ item.value.appname }}' -u '{{ item.value.domain }}' -c -p -f '{{ cyrus_sasl_sasldb_file }}' {{ item.key }}"
+  shell: "echo -n '{{ item.value.password }}' | {{ cyrus_sasl_saslpassword_command }} -a '{{ item.value.appname }}' -u '{{ item.value.domain }}' -c -p -f '{{ cyrus_sasl_sasldb_file }}' {{ item.key }}"
   with_dict: "{{ cyrus_sasl_user }}"
   no_log: yes
   when:
